@@ -1,0 +1,17 @@
+@mixin flex-gap {
+    display: flex;
+    align-items: center;
+}
+
+.header {
+    @include flex-gap;
+    max-width: 89vw;
+    margin: 0 auto;
+    justify-content: space-between;
+    padding: 30px 30px;
+}
+
+.header__nav {
+    @include flex-gap;
+    gap: 60px;
+}
