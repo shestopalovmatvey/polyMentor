@@ -1,7 +1,12 @@
 import { FC } from "react";
 import styles from "./MainInfo.module.scss";
+import { useNavigate } from "react-router-dom";
 
 export const MainInfo: FC = () => {
+  const navigate = useNavigate();
+  const handleClickLink = () => {
+    navigate("login");
+  };
   return (
     <main>
       <section className={styles.section__intro}>
@@ -13,8 +18,8 @@ export const MainInfo: FC = () => {
               СПбПУ
             </p>
           </div>
-          <button className={styles.button__moreInfo}>
-            <p>Подробности</p>
+          <button className={styles.button__moreInfo} onClick={handleClickLink}>
+            <p>Перейти</p>
           </button>
         </div>
 

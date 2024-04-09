@@ -18,7 +18,7 @@ export const SignUpPage = () => {
   };
 
   return (
-    <div className={style.container}>
+    <>
       <Header ishome={false} />
       <section className={style.section}>
         <form className={style.form}>
@@ -32,18 +32,18 @@ export const SignUpPage = () => {
             </button>
           </div>
           <div className={`${style.input__field} ${style.userName__field}`}>
-            <p>Имя:</p>
+            <p>ФИО:</p>
             <input
               type="text"
-              placeholder="Введите имя"
+              placeholder="Введите ФИО"
               className={`${style.input} ${style.input__userName}`}
             />
           </div>
           <div className={`${style.input__field} ${style.userLastName__field}`}>
-            <p>Фамилия:</p>
+            <p>Ваша должность:</p>
             <input
               type="text"
-              placeholder="Введите фамилию"
+              placeholder="Введите должность"
               className={`${style.input} ${style.input__userLastName}`}
             />
           </div>
@@ -72,6 +72,6 @@ export const SignUpPage = () => {
           </p>
         </form>
       </section>
-    </div>
+    </>
   );
 };

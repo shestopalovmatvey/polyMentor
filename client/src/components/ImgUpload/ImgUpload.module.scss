@@ -1,0 +1,13 @@
+.avatarBlock {
+    .imageUpload {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        .inputUpload {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+}

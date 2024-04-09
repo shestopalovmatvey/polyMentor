@@ -1,0 +1,59 @@
+.section__university {
+    max-width: 89vw;
+    margin: 0 auto;
+    padding: 30px 30px;
+
+    .section__title {
+        padding-left: 20px;
+        font-size: 28px;
+        font-weight: 500;
+        margin-bottom: 30px;
+    }
+
+    .spin {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .university__list {
+        max-width: 75vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 40px;
+        margin-bottom: 20px;
+
+        .university__element {
+            width: 20vw;
+            height: 20vh;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 20px;
+            padding: 15px 40px;
+            border-radius: 20px;
+            background-color: #105d3b;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in;
+
+            &:hover {
+                background-color: lighten($color: #105d3b, $amount: 5);
+            }
+
+            p {
+                font-size: 1.3em;
+                font-weight: 400;
+            }
+        }
+    }
+}

@@ -9,7 +9,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className={style.container}>
+    <>
       <Header ishome={false} />
       <section className={style.section} onSubmit={handleSubmit}>
         <form className={style.form}>
@@ -45,6 +45,6 @@ export const LoginPage = () => {
           </p>
         </form>
       </section>
-    </div>
+    </>
   );
 };

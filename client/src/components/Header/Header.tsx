@@ -4,6 +4,7 @@ import { Navbar } from "../Navbar/Navbar";
 import { Buttonlogin } from "../../ElementUI/Buttonlogin/Buttonlogin";
 import { Link } from "react-router-dom";
 import { Drawer } from "../Drawer/Drawer";
+import { Menu } from "../Menu/Menu";
 
 interface IProps {
   ishome: boolean;

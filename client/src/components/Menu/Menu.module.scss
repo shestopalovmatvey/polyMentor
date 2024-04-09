@@ -1,9 +1,63 @@
 .menu {
     position: absolute;
-    top: 7vh;
+    top: -4vh;
     right: 0;
     width: 20vw;
-    height: calc(100vh - 30vh);
+    height: calc(25vh);
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
     background-color: #fff;
-    border: 1px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+    h2 {
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 34px;
+        letter-spacing: 0em;
+        text-align: left;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .list__container {
+        ul {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            gap: 20px;
+        }
+
+        .link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            p {
+                font-size: 23px;
+                font-weight: 400;
+                line-height: 34px;
+                letter-spacing: 0em;
+                text-align: left;
+            }
+        }
+
+        .logo {
+            width: 1vw;
+        }
+    }
+}
+
+.humburger__btn {
+    position: relative;
+    width: 2vw;
+    margin-top: 0.5vw;
+    cursor: pointer;
 }

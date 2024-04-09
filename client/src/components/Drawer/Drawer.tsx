@@ -1,21 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Drawer.module.scss";
 import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
 import { Menu } from "../Menu/Menu";
 
 export const Drawer = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleClickBtn = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
 
   return (
-    <div className={styles.container}>
+    <>
       {!isMenuOpen ? (
-        <RiMenuUnfoldLine className={styles.humburger__btn} />
+        <RiMenuUnfoldLine
+          className={styles.humburger__btn}
+          onClick={handleClickBtn}
+        />
       ) : (
-        <>
-          <RiMenuFoldLine className={styles.humburger__btn} />
-          <Menu />
-        </>
+        <div className={styles.container}>
+          <Menu handle={handleClickBtn} />
+        </div>
       )}
-    </div>
+    </>
   );
 };

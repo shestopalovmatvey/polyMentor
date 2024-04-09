@@ -1,0 +1,32 @@
+.section {
+    width: 850px;
+    height: 1000px;
+
+    margin: 0 auto;
+    padding: 30px 30px;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    .mainInfo {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .userName__field {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-size: 18px;
+        padding: 10px;
+        border: 1px solid #d8dadc;
+        border-radius: 10px;
+    }
+}
