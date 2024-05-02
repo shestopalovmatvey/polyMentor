@@ -4,11 +4,12 @@ import Spin from "antd/es/spin";
 import { LoadingOutlined } from "@ant-design/icons/lib/icons";
 import styles from "./ListOfUniversities.module.scss";
 import { IElementOfList, listOfUnivers } from "../../data/universData";
+import { useNavigate } from "react-router-dom";
 
 export const ListOfUniversities = () => {
   const [university, setUniversity] = useState<IElementOfList[]>();
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     setLoading(true);
     const getUniversity = async () => {
@@ -24,6 +25,10 @@ export const ListOfUniversities = () => {
 
     getUniversity();
   }, []);
+
+  const onClickUniversity = (id: string) => {
+    navigate(`/ListOfAnnouncements/${id}`);
+  };
 
   return (
     <section className={styles.section__university}>
@@ -44,7 +49,11 @@ export const ListOfUniversities = () => {
           <>
             <ul className={styles.university__list}>
               {university?.map((elem) => (
-                <li className={styles.university__element}>
+                <li
+                  key={elem.id}
+                  className={styles.university__element}
+                  onClick={() => onClickUniversity(elem.id)}
+                >
                   <img src={elem.imgSrc} alt="" />
                   <p>{elem.title}</p>
                 </li>

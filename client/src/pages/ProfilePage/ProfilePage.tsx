@@ -13,15 +13,24 @@ export const ProfilePage: FC = () => {
           <div className={styles.container}>
             <div className={styles.userName__field}>
               <label htmlFor="profileName">ФИО:</label>
-              <p id="profileName">Шестопалов Матвей Юрьевич</p>
+              <input type="text" id="profileName" placeholder="Введите ФИО" />
             </div>
             <div className={styles.userName__field}>
               <label htmlFor="profileUniver">Институт:</label>
-              <p id="profileUniver">
-                Институт компьютерных наук и кибербезопасности
-              </p>
+              <input type="text" placeholder="Введите ФИО" id="profileUniver" />
+            </div>
+            <div className={styles.userName__field}>
+              <label htmlFor="profileRole">Ваша должность:</label>
+              <input type="text" placeholder="Введите ФИО" id="profileUniver" />
+            </div>
+            <div className={styles.userName__field}>
+              <label htmlFor="profileText">Напишите про исследования:</label>
+              <textarea name="info" id="profileText"></textarea>
             </div>
           </div>
+        </div>
+        <div className={styles.buttonBlock}>
+          <button className={styles.saveButton}>Сохранить</button>
         </div>
       </section>
     </>

@@ -25,7 +25,7 @@ export const Menu: FC<IPropsMenu> = ({ handle }) => {
             </Link>
           </li>
           <li>
-            <Link to={"/announcement"} className={styles.link}>
+            <Link to={"/announcements"} className={styles.link}>
               <MdOutlineAnnouncement className={styles.logo} />
               <p>Мои объявления</p>
             </Link>

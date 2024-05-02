@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 10vh;
+    margin-top: 5vh;
 
     .title__form {
         font-weight: 700;
@@ -12,8 +12,8 @@
     }
 
     .form {
-        width: 22vw;
-        height: 65vh;
+        width: 27vw;
+        height: 75vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -21,6 +21,14 @@
         padding: 20px 25px;
         border-radius: 10px;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+        .select {
+            width: 100%;
+
+            span {
+                font-size: 16px;
+            }
+        }
 
         .input__field {
             display: flex;
@@ -95,7 +103,7 @@
         .submit__btn {
             width: 100%;
             padding: 10px 20px;
-            margin-top: 40px;
+            margin-top: 10px;
             color: #fff;
             border-radius: 10px;
             background-color: #39ae4e;
@@ -107,7 +115,7 @@
         }
 
         .no__acc {
-            margin-top: 30px;
+            margin-top: 10px;
             margin-bottom: 10px;
             font-size: 16px;
             text-align: center;

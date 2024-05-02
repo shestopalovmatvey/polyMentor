@@ -1,9 +1,15 @@
-const Router = require('express').Router
-const userController = require('../controllers/user-controller')
-const router = new Router()
+const Router = require("express").Router;
+const userController = require("../controllers/user-controller");
+const router = new Router();
+const { body } = require("express-validator");
 
-router.post('/registration', userController.registration)
-router.get('/universities', userController.getListOfUniver)
+router.post(
+  "/registration",
+  body("email").isEmail(),
+  body("password").isLength({ min: 3, max: 32 }),
+  body("userName").isLength({ max: 200 }),
+  userController.registration
+);
+router.get("/universities", userController.getListOfUniver);
 
-
-module.exports = router
+module.exports = router;

@@ -1,0 +1,38 @@
+.container {
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    background: lighten(#105d3b, 10%);
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+
+    &:hover {
+        background-color: #156d4b;
+    }
+}
+
+.btn.custom_btn:hover {
+    background-color: #156d4b !important;
+}
+
+.modal_btn {
+    width: 150px;
+    padding: 10px;
+}
+
+.modal {
+    font-size: 1.5em;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
