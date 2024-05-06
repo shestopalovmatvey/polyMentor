@@ -10,6 +10,7 @@ router.post(
   body("userName").isLength({ max: 200 }),
   userController.registration
 );
+router.post("/login", userController.login);
 router.get("/universities", userController.getListOfUniver);
 
 module.exports = router;

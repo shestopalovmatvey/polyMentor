@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Spin from "antd/es/spin";
 import { LoadingOutlined } from "@ant-design/icons/lib/icons";
 import styles from "./ListOfUniversities.module.scss";
 import { IElementOfList, listOfUnivers } from "../../data/universData";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const ListOfUniversities = () => {
   const [university, setUniversity] = useState<IElementOfList[]>();

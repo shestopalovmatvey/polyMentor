@@ -1,20 +1,72 @@
-import { FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import style from "./LoginPage.module.scss";
 import { Header } from "../../components/Header/Header";
+import { RolePick } from "../../types";
+import $api from "../../http";
+import { setUser } from "../../store/user/user.slice";
+import { useDispatch } from "react-redux";
+import { Button, Modal } from "antd";
+
+interface userData {
+  role: string;
+  password: string;
+  email: string;
+}
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [message, setMessage] = useState("");
+  const [modalActive, setModalActive] = useState(false);
+  const [userInfo, setUserInfo] = useState<userData>({
+    role: "Студент",
+    password: "",
+    email: "",
+  });
+
+  const handleClickRole = () => {
+    userInfo.role === RolePick.student
+      ? setUserInfo({ ...userInfo, role: RolePick.teacher })
+      : setUserInfo({ ...userInfo, role: RolePick.student });
+  };
+
+  const login = async (data: userData) => {
+    try {
+      const response = await $api.post("/login", data, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        },
+      });
+      localStorage.setItem("token", response.data.accessToken);
+      dispatch(setUser(response.data.user));
+      navigate("/profile");
+    } catch (e) {
+      console.log(e);
+      setMessage(e.response.data.message);
+      setModalActive(true);
+    }
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    login(userInfo);
   };
 
   return (
     <>
       <Header ishome={false} />
-      <section className={style.section} onSubmit={handleSubmit}>
-        <form className={style.form}>
+      <section className={style.section}>
+        <form className={style.form} onSubmit={handleSubmit}>
           <div className={style.title__form}>
             <h3>Авторизация</h3>
+          </div>
+          <div className={style.userRolePick}>
+            <label htmlFor="userRolePick">Авторизироваться как:</label>
+            <button id="userRolePick" type="button" onClick={handleClickRole}>
+              <p>{userInfo.role}</p>
+            </button>
           </div>
           <div className={`${style.input__field} ${style.email__field}`}>
             <p>Email:</p>
@@ -23,6 +75,9 @@ export const LoginPage = () => {
               placeholder="Ваш email"
               autoComplete="email"
               className={`${style.input} ${style.input__email}`}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, email: e.target.value })
+              }
             />
           </div>
           <div className={`${style.input__field} ${style.input__field}`}>
@@ -32,6 +87,9 @@ export const LoginPage = () => {
               placeholder="Ваш пароль"
               autoComplete="password"
               className={`${style.input}`}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, password: e.target.value })
+              }
             />
           </div>
           <button type="submit" className={style.submit__btn}>
@@ -45,6 +103,25 @@ export const LoginPage = () => {
           </p>
         </form>
       </section>
+      <Modal
+        title="Процесс авторизации"
+        centered
+        open={modalActive}
+        onOk={() => setModalActive(false)}
+        onCancel={() => setModalActive(false)}
+        width={700}
+        footer={[
+          <Button
+            key="submit"
+            type="primary"
+            onClick={() => setModalActive(false)}
+          >
+            Понятно
+          </Button>,
+        ]}
+      >
+        <p>{message}</p>
+      </Modal>
     </>
   );
 };

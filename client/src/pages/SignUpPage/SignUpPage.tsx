@@ -1,25 +1,30 @@
 import { FormEvent, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import style from "./SignUpPage.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Select from "antd/es/select";
+import { RolePick } from "../../types";
+import $api from "../../http";
+import { Button, Modal } from "antd";
+import Confetti from "react-confetti";
+import useWindowSize from "react-use/lib/useWindowSize";
 
-enum RolePick {
-  student = "Студент",
-  teacher = "Преподаватель",
-}
-
-interface userData {
+interface IUserData {
   role: string;
   userName: string;
   department: string;
   password: string;
   email: string;
-  post: string;
+  post?: string;
 }
 
 export const SignUpPage = () => {
-  const [userInfo, setUserInfo] = useState<userData>({
+  const navigate = useNavigate();
+  const { width, height } = useWindowSize();
+  const [message, setMessage] = useState("");
+  const [modalActive, setModalActive] = useState(false);
+  const [confettiActive, setConfettiActive] = useState(false);
+  const [userInfo, setUserInfo] = useState<IUserData>({
     role: "Студент",
     userName: "",
     department: "",
@@ -34,17 +39,51 @@ export const SignUpPage = () => {
       : setUserInfo({ ...userInfo, role: RolePick.student });
   };
 
+  const removeInputValue = () => {
+    setUserInfo({
+      role: "Студент",
+      userName: "",
+      department: "",
+      password: "",
+      email: "",
+      post: "",
+    });
+    setModalActive(false);
+    navigate("/login");
+  };
+
+  const signUpUser = async <User extends IUserData>(data: User) => {
+    try {
+      const response = await $api.post("/registration", data, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        },
+      });
+      localStorage.setItem("token", response.data.accessToken);
+      setMessage("Вы успешно зарегистрировались!");
+      setModalActive(true);
+      setConfettiActive(true);
+      setTimeout(() => {
+        setConfettiActive(false);
+      }, 5000);
+    } catch (e) {
+      console.log(e);
+      setMessage(e.response.data.message);
+      setModalActive(true);
+    }
+  };
+
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log(userInfo);
+    signUpUser(userInfo);
   };
 
   return (
     <>
       <Header ishome={false} />
       <section className={style.section}>
-        <form className={style.form} onSubmit={onSubmit}>
+        <form className={style.form} onSubmit={onSubmit} autoComplete="on">
           <div className={style.title__form}>
             <h3>Регистрация</h3>
           </div>
@@ -63,6 +102,7 @@ export const SignUpPage = () => {
               onChange={(e) =>
                 setUserInfo({ ...userInfo, userName: e.target.value })
               }
+              autoComplete="username"
             />
           </div>
           <div className={`${style.input__field} ${style.userLastName__field}`}>
@@ -166,6 +206,8 @@ export const SignUpPage = () => {
               onChange={(e) =>
                 setUserInfo({ ...userInfo, email: e.target.value })
               }
+              autoComplete="username"
+              required
             />
           </div>
           <div className={`${style.input__field} ${style.input__field}`}>
@@ -177,6 +219,8 @@ export const SignUpPage = () => {
               onChange={(e) =>
                 setUserInfo({ ...userInfo, password: e.target.value })
               }
+              autoComplete="current-password"
+              required
             />
           </div>
           <button type="submit" className={style.submit__btn}>
@@ -188,6 +232,29 @@ export const SignUpPage = () => {
           </p>
         </form>
       </section>
+      {confettiActive && (
+        <Confetti
+          numberOfPieces={300}
+          gravity={0.06}
+          width={width}
+          height={height}
+        />
+      )}
+      <Modal
+        title="Процесс регистрации"
+        centered
+        open={modalActive}
+        onOk={removeInputValue}
+        onCancel={removeInputValue}
+        width={500}
+        footer={[
+          <Button key="submit" type="primary" onClick={removeInputValue}>
+            Понятно
+          </Button>,
+        ]}
+      >
+        <p>{message}</p>
+      </Modal>
     </>
   );
 };

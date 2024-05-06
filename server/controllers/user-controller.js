@@ -30,6 +30,10 @@ class UserController {
           userName,
           department
         );
+        res.cookie("refreshToken", (await studentData).refreshToken, {
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+        });
         return res.status(200).json(studentData);
       }
 
@@ -41,11 +45,62 @@ class UserController {
           department,
           post
         );
+        res.cookie("refreshToken", (await teacherData).refreshToken, {
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+        });
         return res.status(200).json(teacherData);
       }
     } catch (e) {
       next(e);
     }
+  }
+
+  async login(req, res, next) {
+    try {
+      const { role, email, password } = req.body;
+      if (role === "Преподаватель") {
+        const teacherData = await teacherService.login(email, password);
+        res.cookie("refreshToken", (await teacherData).refreshToken, {
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+        });
+        return res.json(teacherData);
+      }
+      if (role === "Студент") {
+        const studentData = await studentService.login(email, password);
+        res.cookie("refreshToken", (await studentData).refreshToken, {
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+        });
+        return res.json(studentData);
+      }
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async logout(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+      const token = await userService.logout(refreshToken);
+      res.clearCookie("refreshToken");
+      return res.json(token);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async refresh(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+      const userData = await userService.refresh(refreshToken);
+      res.cookie("refreshToken", userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      });
+      return res.json(userData);
+    } catch (e) {}
   }
 
   async getListOfUniver(req, res) {
