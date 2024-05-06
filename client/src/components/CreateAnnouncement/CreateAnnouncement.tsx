@@ -15,6 +15,12 @@ const modalStyles = {
 };
 
 export const CreateAnnouncement = () => {
+  const [announcementInfo, setAnnouncementInfo] = useState({
+    theme: '',
+    communicationMethod: '',
+    projectInfo: '',
+    tags: ''
+  })
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -26,6 +32,10 @@ export const CreateAnnouncement = () => {
     setIsModalOpen(false);
   };
 
+  const handleChange = (value) => {
+    setAnnouncementInfo({...announcementInfo, tags: value})
+  }
+
   const handleOk = () => {
     setLoading(true);
     setTimeout(() => {
@@ -33,6 +43,7 @@ export const CreateAnnouncement = () => {
       setIsModalOpen(false);
     }, 3000);
   };
+  console.log(announcementInfo)
   return (
     <div className={style.container}>
       <Button
@@ -83,7 +94,7 @@ export const CreateAnnouncement = () => {
               size={"middle"}
               placeholder="Тег темы"
               defaultValue={[]}
-              // onChange={handleChange}
+              onChange={handleChange}
               style={{ width: "100%" }}
               options={optionsTag}
             />

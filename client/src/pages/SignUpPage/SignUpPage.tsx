@@ -54,12 +54,7 @@ export const SignUpPage = () => {
 
   const signUpUser = async <User extends IUserData>(data: User) => {
     try {
-      const response = await $api.post("/registration", data, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-        },
-      });
+      const response = await $api.post("/registration", data);
       localStorage.setItem("token", response.data.accessToken);
       setMessage("Вы успешно зарегистрировались!");
       setModalActive(true);
