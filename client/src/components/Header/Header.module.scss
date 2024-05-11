@@ -23,7 +23,8 @@
     align-items: center;
     gap: 20px;
 
-    li a {
+    li a,
+    button {
         display: flex;
         flex-direction: row;
         align-items: center;

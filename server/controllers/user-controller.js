@@ -82,10 +82,18 @@ class UserController {
 
   async logout(req, res, next) {
     try {
+      const { role } = req.body;
       const { refreshToken } = req.cookies;
-      const token = await userService.logout(refreshToken);
-      res.clearCookie("refreshToken");
-      return res.json(token);
+      if (role === "Преподаватель") {
+        const token = await teacherService.logout(refreshToken);
+        res.clearCookie("refreshToken");
+        return res.json(token);
+      }
+      if (role === "Студент") {
+        const token = await studentService.logout(refreshToken);
+        res.clearCookie("refreshToken");
+        return res.json(token);
+      }
     } catch (e) {
       next(e);
     }
@@ -93,14 +101,27 @@ class UserController {
 
   async refresh(req, res, next) {
     try {
+      const { role } = req.body;
       const { refreshToken } = req.cookies;
-      const userData = await userService.refresh(refreshToken);
-      res.cookie("refreshToken", userData.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-      });
-      return res.json(userData);
-    } catch (e) {}
+      if (role === "Преподаватель") {
+        const userData = await teacherService.refresh(refreshToken);
+        res.cookie("refreshToken", userData.refreshToken, {
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+        });
+        return res.json(userData);
+      }
+      if (role === "Студент") {
+        const userData = await studentService.refresh(refreshToken);
+        res.cookie("refreshToken", userData.refreshToken, {
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+        });
+        return res.json(userData);
+      }
+    } catch (e) {
+      next(e);
+    }
   }
 
   async getListOfUniver(req, res) {

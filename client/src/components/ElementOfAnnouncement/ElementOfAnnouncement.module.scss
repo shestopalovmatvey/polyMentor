@@ -1,55 +1,136 @@
 .listElementContainer {
-    padding: 10px;
+    width: 100%;
     border-radius: 12px;
-    box-shadow: rgba(149, 157, 165, 0.35) 0px 8px 24px;
+    list-style: none;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .announcementsmainInfo {
-    width: 100%;
-    display: flex;
-    gap: 30px;
+    padding: 20px;
+
+    border-radius: 15px;
+
+    .announcementTitle {
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .listOfTags {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+        .tags {
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+    }
+
     p {
         font-weight: 400;
         font-size: 16px;
     }
-    .teacher {
-        font-size: 300;
-        margin-bottom: 20px;
-    }
 
-    .theme {
-        margin-left: 10px;
-    }
+    .teacherInfo {
+        margin-top: 10px;
+        .teacherInfoTitle {
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .teacherAvatar {
+            display: flex;
+            align-items: center;
+            gap: 20px;
 
-    h4 {
-        font-weight: 700;
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-    }
+            .teacherText {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
 
-    .post {
-        font-weight: 500;
-        margin-bottom: 10px;
-    }
+                .teacherName {
+                    font-weight: 700;
+                }
+            }
 
-    .message {
-        font-weight: 500;
-        margin-top: 20px;
-        margin-bottom: 10px;
+            .teacherMail {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+
+                .teacherMailTitle {
+                    font-weight: 700;
+                }
+            }
+        }
     }
 
     .projectInfo {
         width: 70%;
-        margin-top: 20px;
-
-        h5 {
-            font-weight: 500;
-            margin-bottom: 15px;
-        }
-
+        margin-top: 10px;
         p {
-            font-weight: 300;
+            font-weight: 400;
             line-height: 1.6;
         }
     }
+
+    .button_list {
+        display: flex;
+        justify-content: end;
+        flex-direction: row;
+        gap: 10px;
+
+        .button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 7px 15px;
+            border-radius: 15px;
+            color: #fff;
+        }
+
+        .edit {
+            background-color: #d68729;
+        }
+
+        .delete {
+            background-color: #c21f1f;
+        }
+    }
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    background: lighten(#105d3b, 10%);
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+
+    &:hover {
+        background-color: #156d4b;
+    }
+}
+
+.btn.custom_btn:hover {
+    background-color: #156d4b !important;
+}
+
+.modal_btn {
+    width: 150px;
+    padding: 10px;
+}
+
+.modal {
+    font-size: 1.5em;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }

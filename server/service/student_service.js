@@ -44,13 +44,12 @@ class StudentService {
     if (!isPasswordEquals) {
       throw ApiError.BadRequest("Пароль неверный");
     }
-
     const userDto = new StudentDto(user);
     const tokens = tokenService.generateToken({ ...userDto });
 
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
-    return { ...tokens, user: userDto };
+    return { ...tokens, user: { ...userDto, role: "Студент" } };
   }
 
   async logout(refreshToken) {
@@ -62,12 +61,21 @@ class StudentService {
     if (!refreshToken) {
       throw ApiError.UnauthorizedError();
     }
-
     const studentData = tokenService.validateRefreshToken(refreshToken);
-    const tokenFromDb = await tokenService.findToken(refreshToken);
-
-    if (!studentData || !tokenFromDb) {
+    if (!studentData) {
       throw ApiError.UnauthorizedError();
+    }
+
+    const tokenFromDb = await tokenService.findToken(refreshToken);
+    if (!tokenFromDb) {
+      throw ApiError.UnauthorizedError();
+    }
+
+    const isTokenExpired = new Date() > new Date(tokenFromDb.expiresIn);
+    if (!isTokenExpired) {
+      const student = await StudentModel.findById(studentData.id);
+      const studentDto = new StudentDto(student);
+      return { accessToken: refreshToken, refreshToken, user: studentDto };
     }
 
     const student = await StudentModel.findById(studentData.id);
@@ -76,7 +84,7 @@ class StudentService {
 
     await tokenService.saveToken(studentDto.id, tokens.refreshToken);
 
-    return { ...tokens, user: userDto };
+    return { ...tokens, user: studentDto };
   }
 }
 

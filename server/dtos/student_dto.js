@@ -4,6 +4,7 @@ module.exports = class StudentDto {
   user_id;
   department;
   id;
+  role;
 
   constructor(model) {
     this.email = model.email;
@@ -11,5 +12,6 @@ module.exports = class StudentDto {
     this.user_id = model.user_id;
     this.userName = model.userName;
     this.department = model.department;
+    this.role = model.role;
   }
 };

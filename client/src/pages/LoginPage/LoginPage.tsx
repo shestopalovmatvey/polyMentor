@@ -5,8 +5,9 @@ import { Header } from "../../components/Header/Header";
 import { RolePick } from "../../types";
 import $api from "../../http";
 import { setUser } from "../../store/user/user.slice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal } from "antd";
+import { RootState } from "../../store";
 
 interface userData {
   role: string;
@@ -15,6 +16,7 @@ interface userData {
 }
 
 export const LoginPage = () => {
+  const { isAuth } = useSelector((store: RootState) => store.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
@@ -40,8 +42,10 @@ export const LoginPage = () => {
         },
       });
       localStorage.setItem("token", response.data.accessToken);
+      localStorage.setItem("role", response.data.user.role);
       dispatch(setUser(response.data.user));
-      navigate("/profile");
+      setMessage("Вы успешно авторизовались!");
+      setModalActive(true);
     } catch (e) {
       console.log(e);
       setMessage(e.response.data.message);
@@ -52,6 +56,21 @@ export const LoginPage = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login(userInfo);
+  };
+
+  const onClickOk = () => {
+    if (isAuth) {
+      setUserInfo({
+        role: "Студент",
+        password: "",
+        email: "",
+      });
+      setModalActive(false);
+      navigate("/profile");
+    } else {
+      setUserInfo({ ...userInfo, password: "" });
+      setModalActive(false);
+    }
   };
 
   return (
@@ -76,7 +95,7 @@ export const LoginPage = () => {
               autoComplete="email"
               className={`${style.input} ${style.input__email}`}
               onChange={(e) =>
-                setUserInfo({ ...userInfo, email: e.target.value })
+                setUserInfo({ ...userInfo, email: e.target.value.trim() })
               }
             />
           </div>
@@ -88,7 +107,7 @@ export const LoginPage = () => {
               autoComplete="password"
               className={`${style.input}`}
               onChange={(e) =>
-                setUserInfo({ ...userInfo, password: e.target.value })
+                setUserInfo({ ...userInfo, password: e.target.value.trim() })
               }
             />
           </div>
@@ -107,15 +126,11 @@ export const LoginPage = () => {
         title="Процесс авторизации"
         centered
         open={modalActive}
-        onOk={() => setModalActive(false)}
+        onOk={onClickOk}
         onCancel={() => setModalActive(false)}
         width={700}
         footer={[
-          <Button
-            key="submit"
-            type="primary"
-            onClick={() => setModalActive(false)}
-          >
+          <Button key="submit" type="primary" onClick={onClickOk}>
             Понятно
           </Button>,
         ]}

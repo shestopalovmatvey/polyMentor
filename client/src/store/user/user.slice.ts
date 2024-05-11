@@ -11,12 +11,12 @@ export interface IUser {
 
 export type IUserSlice = {
   isAuth: boolean;
-  user: IUser;
+  userInfo: IUser;
 };
 
 const initialState: IUserSlice = {
   isAuth: false,
-  user: {} as IUser,
+  userInfo: {} as IUser,
 };
 
 const userSlice = createSlice({
@@ -25,11 +25,11 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.isAuth = true;
-      state.user = action.payload;
+      state.userInfo = action.payload;
     },
     logoutUser: (state) => {
       state.isAuth = false;
-      state.user = {} as IUser;
+      state.userInfo = {} as IUser;
     },
   },
 });

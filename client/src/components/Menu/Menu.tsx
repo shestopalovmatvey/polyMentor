@@ -1,15 +1,56 @@
-import { RiFileList2Line, RiMenuFoldLine } from "react-icons/ri";
+import {
+  RiFileList2Line,
+  RiLogoutCircleRLine,
+  RiMenuFoldLine,
+} from "react-icons/ri";
 import styles from "./Menu.module.scss";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineAnnouncement } from "react-icons/md";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import { logoutUser } from "../../store/user/user.slice";
+import { useDispatch } from "react-redux";
+import { Modal } from "antd";
+import $api from "../../http";
 
 interface IPropsMenu {
   handle: () => void;
 }
 
 export const Menu: FC<IPropsMenu> = ({ handle }) => {
+  const { confirm } = Modal;
+  const dispatch = useDispatch();
+  const handleClickLogoutBtn = async () => {
+    try {
+      await $api.post(
+        "/logout",
+        {
+          role: localStorage.getItem("role"),
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      dispatch(logoutUser());
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const showConfirm = () => {
+    confirm({
+      title: "Выход из аккаунта",
+      icon: <ExclamationCircleFilled />,
+      content: "Вы уверены что хотите выйти из аккаунта?",
+      centered: true,
+      onOk() {
+        handleClickLogoutBtn();
+      },
+      onCancel() {},
+    });
+  };
   return (
     <aside className={styles.menu}>
       <div className={styles.container}>
@@ -35,6 +76,12 @@ export const Menu: FC<IPropsMenu> = ({ handle }) => {
               <RiFileList2Line className={styles.logo} />
               <p>Список институтов</p>
             </Link>
+          </li>
+          <li>
+            <button onClick={showConfirm} className={styles.link}>
+              <RiLogoutCircleRLine className={styles.logo} />
+              <p>Выйти</p>
+            </button>
           </li>
         </ul>
       </div>

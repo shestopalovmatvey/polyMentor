@@ -50,7 +50,7 @@ class TeacherService {
 
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
-    return { ...tokens, user: userDto };
+    return { ...tokens, user: { ...userDto, role: "Преподаватель" } };
   }
 
   async logout(refreshToken) {
@@ -64,19 +64,28 @@ class TeacherService {
     }
 
     const teacherData = tokenService.validateRefreshToken(refreshToken);
-    const tokenFromDb = await tokenService.findToken(refreshToken);
-
-    if (!teacherData || !tokenFromDb) {
+    if (!teacherData) {
       throw ApiError.UnauthorizedError();
+    }
+
+    const tokenFromDb = await tokenService.findToken(refreshToken);
+    if (!tokenFromDb) {
+      throw ApiError.UnauthorizedError();
+    }
+
+    const isTokenExpired = new Date() > new Date(tokenFromDb.expiresIn);
+    if (!isTokenExpired) {
+      const teacher = await TeacherModel.findById(teacherData.id);
+      const teacherDto = new TeacherDto(teacher);
+      return { accessToken: refreshToken, refreshToken, user: teacherDto };
     }
 
     const teacher = await TeacherModel.findById(teacherData.id);
     const teacherDto = new TeacherDto(teacher);
     const tokens = tokenService.generateToken({ ...teacherDto });
 
-    await tokenService.saveToken(studentDto.id, tokens.refreshToken);
-
-    return { ...tokens, user: userDto };
+    await tokenService.saveToken(teacherDto.id, tokens.refreshToken);
+    return { ...tokens, user: teacherDto };
   }
 }
 

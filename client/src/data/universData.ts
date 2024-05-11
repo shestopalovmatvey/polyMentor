@@ -4,6 +4,40 @@ export interface IElementOfList {
   imgSrc: string;
 }
 
+export const optionsTag = [
+  {
+    label: "Искусственный интеллект и машинное обучение",
+    value: "Искусственный интеллект и машинное обучение",
+  },
+  {
+    label: "Информационная безопасность",
+    value: "Информационная безопасность",
+  },
+  {
+    label: "Разработка программного обеспечения",
+    value: "Разработка программного обеспечения",
+  },
+  { label: "Большие данные (Big Data)", value: "Большие данные (Big Data)" },
+  {
+    label: "Разработка виртуальной и дополненной реальности",
+    value: "Разработка виртуальной и дополненной реальности",
+  },
+  {
+    label: "Робототехника",
+    value: "Робототехника",
+  },
+];
+
+export const modalStyles = {
+  header: {
+    fontSize: "20",
+  },
+  footer: {
+    display: "flex",
+    justifyContent: "end",
+  },
+};
+
 export const listOfUnivers: IElementOfList[] = [
   {
     id: "hum.spbstu",

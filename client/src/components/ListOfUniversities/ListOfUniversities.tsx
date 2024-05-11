@@ -27,7 +27,7 @@ export const ListOfUniversities = () => {
   }, []);
 
   const onClickUniversity = (id: string) => {
-    navigate(`/ListOfAnnouncements/${id}`);
+    navigate(`/universities/${id}`);
   };
 
   return (

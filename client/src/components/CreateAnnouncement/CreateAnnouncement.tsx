@@ -2,25 +2,19 @@ import React, { useState } from "react";
 import style from "./CreateAnnouncement.module.scss";
 import { Button, ConfigProvider, Input, Modal, Select } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { optionsTag } from "../../pages/ListOfAnnouncements/ListOfAnnouncements";
-
-const modalStyles = {
-  header: {
-    fontSize: "20",
-  },
-  footer: {
-    display: "flex",
-    justifyContent: "end",
-  },
-};
+import $api from "../../http";
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
+import { modalStyles, optionsTag } from "../../data/universData";
 
 export const CreateAnnouncement = () => {
+  const { userInfo } = useSelector((store: RootState) => store.user);
   const [announcementInfo, setAnnouncementInfo] = useState({
-    theme: '',
-    communicationMethod: '',
-    projectInfo: '',
-    tags: ''
-  })
+    theme: "",
+    communicationMethod: "",
+    projectInfo: "",
+    tags: [],
+  });
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -30,20 +24,47 @@ export const CreateAnnouncement = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setAnnouncementInfo({
+      theme: "",
+      communicationMethod: "",
+      projectInfo: "",
+      tags: [],
+    });
+  };
+  console.log("announcementInfo", announcementInfo);
+  const handleChange = (value: string[]) => {
+    setAnnouncementInfo({ ...announcementInfo, tags: value });
   };
 
-  const handleChange = (value) => {
-    setAnnouncementInfo({...announcementInfo, tags: value})
-  }
-
-  const handleOk = () => {
-    setLoading(true);
-    setTimeout(() => {
+  const handleOk = async () => {
+    try {
+      const data = {
+        ...announcementInfo,
+        user: userInfo.id,
+        userName: userInfo.userName,
+        department: userInfo.department,
+        post: userInfo.post,
+      };
+      setLoading(true);
+      await $api.post("/createAnnouncement", data, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        },
+      });
       setLoading(false);
       setIsModalOpen(false);
-    }, 3000);
+      setAnnouncementInfo({
+        theme: "",
+        communicationMethod: "",
+        projectInfo: "",
+        tags: "",
+      });
+    } catch (error) {
+      console.error("Error creating announcement:", error);
+      setLoading(false);
+    }
   };
-  console.log(announcementInfo)
   return (
     <div className={style.container}>
       <Button
@@ -80,14 +101,38 @@ export const CreateAnnouncement = () => {
           ]}
         >
           <form className={style.form}>
-            <Input style={{ fontSize: 15 }} placeholder="Введите тему..." />
+            <Input
+              style={{ fontSize: 15 }}
+              placeholder="Введите тему..."
+              value={announcementInfo.theme}
+              onChange={(e) =>
+                setAnnouncementInfo({
+                  ...announcementInfo,
+                  theme: e.target.value.trim(),
+                })
+              }
+            />
             <Input
               style={{ fontSize: 15 }}
               placeholder="Введите способ связи..."
+              value={announcementInfo.communicationMethod}
+              onChange={(e) =>
+                setAnnouncementInfo({
+                  ...announcementInfo,
+                  communicationMethod: e.target.value.trim(),
+                })
+              }
             />
             <TextArea
               placeholder="Введите информацию о проекте..."
               style={{ height: 200, resize: "none", fontSize: 15 }}
+              value={announcementInfo.tags}
+              onChange={(e) =>
+                setAnnouncementInfo({
+                  ...announcementInfo,
+                  projectInfo: e.target.value.trim(),
+                })
+              }
             />
             <Select
               mode="multiple"

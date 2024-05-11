@@ -56,6 +56,7 @@ export const SignUpPage = () => {
     try {
       const response = await $api.post("/registration", data);
       localStorage.setItem("token", response.data.accessToken);
+      localStorage.setItem("role", response.data.user.role);
       setMessage("Вы успешно зарегистрировались!");
       setModalActive(true);
       setConfettiActive(true);
@@ -63,7 +64,6 @@ export const SignUpPage = () => {
         setConfettiActive(false);
       }, 5000);
     } catch (e) {
-      console.log(e);
       setMessage(e.response.data.message);
       setModalActive(true);
     }
@@ -95,7 +95,7 @@ export const SignUpPage = () => {
               placeholder="Введите ФИО"
               className={`${style.input} ${style.input__userName}`}
               onChange={(e) =>
-                setUserInfo({ ...userInfo, userName: e.target.value })
+                setUserInfo({ ...userInfo, userName: e.target.value.trim() })
               }
               autoComplete="username"
             />
@@ -199,7 +199,7 @@ export const SignUpPage = () => {
               placeholder="Введите email"
               className={`${style.input} ${style.input__email}`}
               onChange={(e) =>
-                setUserInfo({ ...userInfo, email: e.target.value })
+                setUserInfo({ ...userInfo, email: e.target.value.trim() })
               }
               autoComplete="username"
               required
@@ -212,7 +212,7 @@ export const SignUpPage = () => {
               placeholder="Введите пароль"
               className={`${style.input}`}
               onChange={(e) =>
-                setUserInfo({ ...userInfo, password: e.target.value })
+                setUserInfo({ ...userInfo, password: e.target.value.trim() })
               }
               autoComplete="current-password"
               required

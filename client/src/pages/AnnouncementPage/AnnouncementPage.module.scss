@@ -36,7 +36,9 @@
     box-shadow: rgba(149, 157, 165, 0.5) 0px 8px 24px;
 }
 
-.containerOfLis {
+.containerOfList {
+    width: 1200px;
+    height: calc(100vh - 220px);
     overflow: auto;
 }
 
@@ -44,4 +46,28 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    padding: 20px;
+    gap: 20px;
+}
+
+.container_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn_primery {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    background: #178957;
+    padding: 10px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    color: #fff;
+
+    &:hover {
+        background: lighten($color: #178957, $amount: 10);
+    }
 }
