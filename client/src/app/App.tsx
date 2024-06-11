@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/user/user.slice";
 import { RootState } from "../store";
 import { Loader } from "../components/Loader/Loader";
+import { FavoriteAnnouncementPage } from "../pages/FavoriteAnnouncementPage/FavoriteAnnouncementPage";
 
 const App: FC = () => {
   const [loading, setLoading] = useState(true);
@@ -68,11 +69,24 @@ const App: FC = () => {
             path="/universities"
             element={isAuth ? <UniversitysPage /> : <Navigate to="/login" />}
           />
-          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/login"
+            element={isAuth ? <UniversitysPage /> : <LoginPage />}
+          />
           <Route path="/signUp" element={<SignUpPage />} />
           <Route
             path="/profile"
             element={isAuth ? <ProfilePage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/favoriteAnnouncement"
+            element={
+              isAuth && role === "Студент" ? (
+                <FavoriteAnnouncementPage />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           />
           <Route
             path="/announcements"

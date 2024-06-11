@@ -1,6 +1,6 @@
 import style from "./ListOfAnnouncements.module.scss";
 import { Header } from "../../components/Header/Header";
-import { Checkbox, GetProp } from "antd";
+import { Checkbox, GetProp, Result } from "antd";
 import { ElementOfAnnouncement } from "../../components/ElementOfAnnouncement/ElementOfAnnouncement";
 import { optionsTag } from "../../data/universData";
 import { FormEvent, useEffect, useState } from "react";
@@ -102,6 +102,7 @@ export const ListOfAnnouncements = () => {
                 options={optionsTag}
                 onChange={onChange}
                 className={style.checkboxGroup}
+                value={searchInfo.tags}
               />
             </div>
             <button
@@ -112,18 +113,29 @@ export const ListOfAnnouncements = () => {
               Сбросить фильтры
             </button>
           </div>
-          <div className={style.announcements}>
-            <ul className={style.listOfAnnouncements}>
-              {listOfAnnouncement.map((elem) => (
-                <ElementOfAnnouncement
-                  data={elem}
-                  isEditPage={false}
-                  setListOfAnnouncements={null}
-                  key={elem.id}
-                />
-              ))}
-            </ul>
-          </div>
+          {listOfAnnouncement.length ? (
+            <div className={style.announcements}>
+              <ul className={style.listOfAnnouncements}>
+                {listOfAnnouncement.map((elem) => (
+                  <ElementOfAnnouncement
+                    data={elem}
+                    isEditPage={false}
+                    setListOfAnnouncements={null}
+                    isFavorite={false}
+                    isUniversPage={true}
+                    key={elem.id}
+                  />
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className={style.resultContainer}>
+              <Result
+                status="404"
+                title="Преподаватели еще не выложили объявления"
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -19,6 +19,7 @@ class StudentService {
       email,
       password: hashPassword,
       userName,
+      favoriteAnnouncements,
     });
 
     const studentDto = new StudentDto(user);
@@ -85,6 +86,47 @@ class StudentService {
     await tokenService.saveToken(studentDto.id, tokens.refreshToken);
 
     return { ...tokens, user: studentDto };
+  }
+
+  async addToFavorites(studentId, announcementId) {
+    const student = await StudentModel.findById(studentId);
+    if (!student) {
+      throw ApiError.BadRequest("Студент не найден");
+    }
+
+    if (!student.favoriteAnnouncements.includes(announcementId)) {
+      student.favoriteAnnouncements.push(announcementId);
+      await student.save();
+      return { message: "Объявление успешно добавлено в избранное!" };
+    } else {
+      return { message: "Объявление уже добавлено в избранное!" };
+    }
+  }
+
+  async removeFromFavorites(studentId, announcementId) {
+    const student = await StudentModel.findById(studentId);
+    if (!student) {
+      throw ApiError.BadRequest("Студент не найден");
+    }
+
+    const index = student.favoriteAnnouncements.indexOf(announcementId);
+    if (index !== -1) {
+      student.favoriteAnnouncements.splice(index, 1);
+      await student.save();
+      return { message: "Объявление успешно удалено из избранного студента" };
+    } else {
+      return { message: "Объявление не найдено в избранном студента" };
+    }
+  }
+
+  async getAllFavoriteAnnouncements(studentId) {
+    const student = await StudentModel.findById(studentId).populate(
+      "favoriteAnnouncements"
+    );
+    if (!student) {
+      throw new Error("Студент не найден");
+    }
+    return student.favoriteAnnouncements;
   }
 }
 

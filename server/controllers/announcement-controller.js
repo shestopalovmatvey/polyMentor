@@ -13,7 +13,6 @@ class AnnouncementController {
         projectInfo,
         tags,
       } = req.body;
-
       const announcement = await announcementService.createAnnouncement(
         user,
         theme,

@@ -17,7 +17,8 @@ export const CreateAnnouncement = () => {
   });
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isErrorModal, setIsErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -58,10 +59,12 @@ export const CreateAnnouncement = () => {
         theme: "",
         communicationMethod: "",
         projectInfo: "",
-        tags: "",
+        tags: [],
       });
     } catch (error) {
       console.error("Error creating announcement:", error);
+      setIsErrorModal(true);
+      setErrorMessage(error.response.data.message);
       setLoading(false);
     }
   };
@@ -108,7 +111,7 @@ export const CreateAnnouncement = () => {
               onChange={(e) =>
                 setAnnouncementInfo({
                   ...announcementInfo,
-                  theme: e.target.value.trim(),
+                  theme: e.target.value,
                 })
               }
             />
@@ -119,18 +122,18 @@ export const CreateAnnouncement = () => {
               onChange={(e) =>
                 setAnnouncementInfo({
                   ...announcementInfo,
-                  communicationMethod: e.target.value.trim(),
+                  communicationMethod: e.target.value,
                 })
               }
             />
             <TextArea
               placeholder="Введите информацию о проекте..."
               style={{ height: 200, resize: "none", fontSize: 15 }}
-              value={announcementInfo.tags}
+              value={announcementInfo.projectInfo}
               onChange={(e) =>
                 setAnnouncementInfo({
                   ...announcementInfo,
-                  projectInfo: e.target.value.trim(),
+                  projectInfo: e.target.value,
                 })
               }
             />
@@ -144,6 +147,25 @@ export const CreateAnnouncement = () => {
               options={optionsTag}
             />
           </form>
+        </Modal>
+        <Modal
+          title="Процесс создания"
+          centered
+          open={isErrorModal}
+          onCancel={() => setIsErrorModal(false)}
+          width={700}
+          footer={[
+            <Button
+              key="submit"
+              type="primary"
+              onClick={() => setIsErrorModal(false)}
+              className={`${style.btn} ${style.custom_btn} ${style.modal_btn}`}
+            >
+              Понятно
+            </Button>,
+          ]}
+        >
+          <p className={style.errorText}>{errorMessage}</p>
         </Modal>
       </ConfigProvider>
     </div>

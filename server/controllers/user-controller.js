@@ -137,6 +137,43 @@ class UserController {
       await client.close();
     }
   }
+
+  async addToFavorites(req, res, next) {
+    try {
+      const { studentId, announcementId } = req.body;
+      const result = await studentService.addToFavorites(
+        studentId,
+        announcementId
+      );
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async removeFromFavorites(req, res, next) {
+    try {
+      const { studentId, announcementId } = req.body;
+      const result = await studentService.removeFromFavorites(
+        studentId,
+        announcementId
+      );
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getAllFavoriteAnnouncements(req, res, next) {
+    try {
+      const { studentId } = req.body;
+      const favoriteAnnouncements =
+        await studentService.getAllFavoriteAnnouncements(studentId);
+      res.json(favoriteAnnouncements);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new UserController();

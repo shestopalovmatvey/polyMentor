@@ -20,8 +20,16 @@ export const ImgUpload: FC = () => {
   return (
     <div className={styles.avatarBlock}>
       <div className={styles.container}>
-        <div>
+        <div className={styles.container}>
           <Avatar shape="square" size={180} icon={<UserOutlined />} />
+          <div className={styles.inputUpload}>
+            <input
+              type="file"
+              id="image-upload"
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
+          </div>
         </div>
         {/* {profileImage ? (
           <div>
@@ -30,15 +38,7 @@ export const ImgUpload: FC = () => {
         ) : (
           <div className={styles.imageUpload}>
             <Avatar shape="square" size={180} icon={<UserOutlined />} />
-            <div className={styles.inputUpload}>
-              <label htmlFor="image-upload">Загрузить фото:</label>
-              <input
-                type="file"
-                id="image-upload"
-                accept="image/*"
-                onChange={handleImageUpload}
-              />
-            </div>
+            
           </div>
         )} */}
       </div>

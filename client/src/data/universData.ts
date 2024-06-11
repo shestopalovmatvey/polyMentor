@@ -30,7 +30,7 @@ export const optionsTag = [
 
 export const modalStyles = {
   header: {
-    fontSize: "20",
+    fontSize: "16",
   },
   footer: {
     display: "flex",

@@ -6,6 +6,7 @@ const StudentSchema = new Schema({
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   userName: { type: String, required: true },
+  favoriteAnnouncements: [{ type: Schema.Types.ObjectId, ref: "Announcement" }],
 });
 
 module.exports = model("Student", StudentSchema);

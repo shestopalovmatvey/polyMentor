@@ -21,6 +21,7 @@ interface IPropsMenu {
 export const Menu: FC<IPropsMenu> = ({ handle }) => {
   const { confirm } = Modal;
   const dispatch = useDispatch();
+  const role = localStorage.getItem("role");
   const handleClickLogoutBtn = async () => {
     try {
       await $api.post(
@@ -66,10 +67,17 @@ export const Menu: FC<IPropsMenu> = ({ handle }) => {
             </Link>
           </li>
           <li>
-            <Link to={"/announcements"} className={styles.link}>
-              <MdOutlineAnnouncement className={styles.logo} />
-              <p>Мои объявления</p>
-            </Link>
+            {role === "Студент" ? (
+              <Link to={"/favoriteAnnouncement"} className={styles.link}>
+                <MdOutlineAnnouncement className={styles.logo} />
+                <p>Избранные объявления</p>
+              </Link>
+            ) : (
+              <Link to={"/announcements"} className={styles.link}>
+                <MdOutlineAnnouncement className={styles.logo} />
+                <p>Мои объявления</p>
+              </Link>
+            )}
           </li>
           <li>
             <Link to={"/universities"} className={styles.link}>

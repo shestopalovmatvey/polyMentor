@@ -7,11 +7,18 @@ const { body } = require("express-validator");
 router.post(
   "/registration",
   body("email").isEmail(),
-  body("password").isLength({ min: 3, max: 32 }),
+  body("password").isLength({ min: 6, max: 32 }),
   body("userName").isLength({ max: 200 }),
   userController.registration
 );
-router.post("/login", userController.login);
+router.post(
+  "/login",
+  body("email").isEmail().withMessage("Некорректный адрес электронной почты"),
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Пароль должен содержать минимум 3 символа"),
+  userController.login
+);
 router.post(
   "/createAnnouncement",
   body("user").notEmpty(),
@@ -28,6 +35,12 @@ router.post("/updateAnnouncement", announcementController.updateAnnouncement);
 router.post("/logout", userController.logout);
 router.post("/refresh", userController.refresh);
 router.post("/searchAnnouncements", announcementController.searchAnnouncements);
+router.post("/addToFavorites", userController.addToFavorites);
+router.post("/removeFromFavorites", userController.removeFromFavorites);
+router.post(
+  "/getAllFavoriteAnnouncements",
+  userController.getAllFavoriteAnnouncements
+);
 router.get(
   "/getAnnouncementsByUser",
   announcementController.getAnnouncementsByUser

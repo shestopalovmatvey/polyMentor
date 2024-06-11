@@ -14,5 +14,5 @@ const AnnouncementSchema = new Schema({
   projectInfo: { type: String, required: true },
   tags: { type: [String], required: true },
 });
-
+AnnouncementSchema.index({ department: 1 });
 module.exports = model("Announcement", AnnouncementSchema);
